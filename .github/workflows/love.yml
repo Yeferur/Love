@@ -1,0 +1,411 @@
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¿Quieres ser mi novio?</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <style>
+        /* Animación personalizada */
+        @keyframes extravagantBackground {
+          0% {
+            background: radial-gradient(circle, #3b82f6, #1d4ed8); /* Azul */
+            transform: rotate(0deg) scale(1);
+          }
+          25% {
+            background: radial-gradient(circle, #ef4444, #b91c1c); /* Rojo */
+            transform: rotate(120deg) scale(1.1);
+          }
+          50% {
+            background: radial-gradient(circle, #ffffff, #e5e7eb); /* Blanco */
+            transform: rotate(240deg) scale(1.2);
+          }
+          75% {
+            background: radial-gradient(circle, #9333ea, #a855f7); /* Morado */
+            transform: rotate(360deg) scale(1.1);
+          }
+          100% {
+            background: radial-gradient(circle, #6b21a8, #4c1d95); /* Morado final */
+            transform: rotate(0deg) scale(1);
+          }
+        }
+    
+        /* Clase de animación divertida */
+        .extravagant-animation {
+          animation: extravagantBackground 6s ease-in-out infinite;
+        }
+      </style>
+</head>
+
+<body
+    class="bg-blue-500 text-white min-h-screen flex flex-col justify-center items-center transition-colors duration-500">
+
+    <!-- Sección de Bienvenida -->
+    <section id="welcome" class="text-center">
+        <h1 class="text-4xl font-bold mb-6">¡Hola!</h1>
+        <p class="text-lg">He creado algo especial para ti ❤️</p>
+        <button id="startBtn"
+            class="mt-6 px-6 py-3 bg-white text-blue-500 font-semibold rounded-lg shadow hover:bg-gray-200 transition-colors">
+            Comenzar
+        </button>
+    </section>
+
+    <!-- Juego Progresivo -->
+    <section id="verify" class="hidden flex flex-col items-center">
+        <h2 class="text-3xl font-bold mb-4">¿Eres Juan José Moncada Moreno?</h2>
+        <p class="text-lg mb-6">El es quien puede obtener mi corazón ❤️</p>
+        <div class="flex gap-4">
+            <button id="yesVerifyBtn"
+                class="px-4 py-2 bg-white text-blue-500 font-semibold rounded-lg shadow hover:bg-gray-200 transition-colors">Sí</button>
+            <button id="noVerifyBtn"
+                class="px-4 py-2 bg-white text-blue-500 font-semibold rounded-lg shadow hover:bg-gray-200 transition-colors">No</button>
+        </div>
+        <p id="errorMessage" class="hidden"></p>
+    </section>
+
+    <section id="movieQuestion" class="hidden flex flex-col items-center">
+        <h2 class="text-3xl font-bold mb-4">¿Cuál fue la película que vimos el día que nos conocimos?</h2>
+        <div class="flex gap-4" id="movieOptions">
+            <button class="movieOption px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600">Moana</button>
+            <button class="movieOption px-4 py-2 bg-gray-800 text-red-500 rounded-lg hover:bg-gray-700"
+                data-correct="true">Venom</button>
+            <button class="movieOption px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600">Wicked</button>
+        </div>
+        <p id="movieMessage" class="mt-6 text-lg font-semibold hidden"></p>
+    </section>
+
+    <section id="game" class="hidden flex flex-col items-center">
+        <h2 class="text-3xl font-bold mb-4">Veamos qué tanto me conoces 🧐</h2>
+
+        <div id="questions" class="space-y-8">
+            <div>
+                <p class="font-semibold mb-4">1. ¿Cuáles son mis gomitas favoritas?</p>
+                <div class="flex gap-4">
+                    <button class="option px-4 py-2 bg-pink-700 text-white hover:bg-pink-800 rounded">Fresitas</button>
+                    <button class="option px-4 py-2 bg-orange-600 text-white hover:bg-orange-700 rounded"
+                        data-correct="true">Casquitos de mandarina</button>
+                    <button class="option px-4 py-2 bg-green-600 text-white hover:bg-green-700 rounded">Sandía</button>
+                </div>
+            </div>
+            <div class="hidden">
+                <p class="font-semibold mb-4">2. ¿Cuál es mi color favorito?</p>
+                <div class="flex gap-4">
+                    <button class="option px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded">Azul</button>
+                    <button class="option px-4 py-2 bg-white text-red-600 hover:bg-gray-200 rounded"
+                        data-correct="true">Rojo</button>
+                    <button class="option px-4 py-2 bg-green-600 hover:bg-green-700 rounded">Verde</button>
+                </div>
+            </div>
+        </div>
+
+        <p id="gameMessage" class="mt-6 text-lg font-semibold hidden"></p>
+    </section>
+
+    <section id="relationshipQuestion" class="hidden flex flex-col items-center">
+        <h2 class="text-3xl font-bold mb-4">Si de casualidad te pidiera ser mi novio en este mismo instante, ¿pensarías
+            que sería muy pronto?</h2>
+        <div class="flex gap-4">
+            <button id="noBtnRelationship" class="px-4 py-2 text-black bg-gray-300 hover:bg-gray-400 rounded">Sí</button>
+            <button id="yesBtnRelationship" class="px-4 py-2 text-black bg-gray-300 hover:bg-gray-400 rounded">No</button>
+        </div>
+    </section>
+
+    <section id="relationshipAnswer" class="hidden flex flex-col items-center m-52">
+        <p id="relationshipMessage" class="mt-6 text-lg font-semibold mb-4"></p>
+        <p id="finalMessageGame" class="mt-6 text-lg font-semibold mb-4"></p>
+    </section>
+
+
+    <!-- Poema -->
+    <section id="poem" class="hidden flex flex-col items-center text-center px-6">
+        <h2 class="text-3xl font-bold mb-4">Un poema para ti 💕</h2>
+        <p class="italic mb-6">"En el jardín de mi corazón, florece un sentimiento,<br>
+            Un amor que crece con cada pensamiento.<br>
+            Juan José, con tu sonrisa iluminas mi día,<br>
+            Y en tus ojos encuentro mi alegría.<br><br>
+
+            Caminemos juntos por el sendero del amor,<br>
+            Donde cada paso nos acerca más al calor.<br>
+            Quiero ser tu compañero en cada amanecer,<br>
+            Y en cada atardecer, fundirnos en placer.<br><br>
+
+            Atrévete a volar conmigo en este sueño,<br>
+            Donde los dos seremos uno en este empeño.<br>
+            Juan, ¿te atreves a ser mi compañero?<br>
+            ¿A navegar conmigo este mar sincero?<br><br>
+
+            Juntos enfrentaremos los vientos y mareas,<br>
+            Con amor y complicidad en nuestras almas llenas.<br>
+            Entonces dime, Juan José, ¿quieres ser mi amor eterno?<br>
+            Porque contigo, mi vida, es un dulce invierno."</p>
+        <div class="flex flex-col items-center" id="termsButtons">
+            <p>Antes de decidir, lee los términos y condiciones.</p>
+            <button id="toTermsBtn"
+                class="px-6 py-3 text-black bg-gray-300 hover:bg-gray-400 rounded">términos y
+                condiciones</button>
+        </div>
+    </section>
+
+    <!-- Resolución Final -->
+    <section id="final" class="hidden text-center">
+        <h2 class="text-4xl font-bold mb-4" id="finalTitle">¿Quieres ser mi novio? 💕</h2>
+        <div class="flex gap-6 justify-center" id="finalButtons">
+            <button id="yesBtn"
+                class="px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-lg font-semibold">¡Sí!</button>
+            <button id="noBtn"
+                class="px-6 py-3 bg-gray-300 hover:bg-gray-400 rounded-lg text-lg font-semibold">No</button>
+        </div>
+
+        <p id="finalMessage" class="mt-6 text-2xl font-bold hidden">🎉 ¡Gracias por aceptar, mi amor! 🎉</p>
+    </section>
+
+    <!-- Términos y Condiciones -->
+    <section id="terms" class="hidden flex flex-col items-center">
+        <h2 class="text-4xl font-bold mb-4">Términos y Condiciones de Nuestra Relación 🤍📜</h2>
+
+        <h2 class="text-3xl font-bold mb-4">Cláusula 1: Amor Incondicional ❤️</h2>
+        <ul class="text-left mb-6 list-disc px-6">
+            <li>Aceptar a Yeferson tal como es 🧑‍🤝‍🧑</li>
+            <li>Incluye sus virtudes y pequeños defectos 🌟</li>
+            <li>Compromiso de amor real 💍</li>
+        </ul>
+
+        <h2 class="text-3xl font-bold mb-4">Cláusula 2: Momentos Especiales ✨</h2>
+        <ul class="text-left mb-6 list-disc px-6">
+            <li>Promesa de aventuras juntos 🗺️</li>
+            <li>Garantía de risas y complicidad 😂</li>
+            <li>Derecho a momentos románticos 🌹</li>
+        </ul>
+
+        <h2 class="text-3xl font-bold mb-4">Cláusula 3: Comunicación 🗣️</h2>
+        <ul class="text-left mb-6 list-disc px-6">
+            <li>Comunicación honesta 🫶</li>
+            <li>Resolver conflictos con amor 🤝</li>
+            <li>Escucha activa garantizada 👂</li>
+        </ul>
+
+        <h2 class="text-3xl font-bold mb-4">Cláusula 4: Diversión Asegurada 🎉</h2>
+        <ul class="text-left mb-6 list-disc px-6">
+            <li>Promesa de planes divertidos 🎢</li>
+            <li>No permitir la monotonía 🚫</li>
+            <li>Compromiso de creatividad en la relación 🎨</li>
+        </ul>
+        <button id="acceptTerms" class="px-6 py-3 text-black bg-gray-300 hover:bg-gray-400 rounded"">
+            Cerrar
+        </button>
+    </section>
+
+
+
+    <script>
+
+        const body = document.body;
+        // Referencias a las secciones y botones
+        const welcomeSection = document.getElementById('welcome');
+        const verifySection = document.getElementById('verify');
+        const movieQuestionSection = document.getElementById('movieQuestion');
+        const gameSection = document.getElementById('game');
+        const relationshipQuestionSection = document.getElementById('relationshipQuestion');
+        const relationshipAnswerSection = document.getElementById('relationshipAnswer');
+        const poemSection = document.getElementById('poem');
+        const termsSection = document.getElementById('terms');
+        const finalSection = document.getElementById('final');
+        const finalTitle = document.getElementById('finalTitle');
+
+        const startBtn = document.getElementById('startBtn');
+        const yesVerifyBtn = document.getElementById('yesVerifyBtn');
+        const noVerifyBtn = document.getElementById('noVerifyBtn');
+        const movieOptions = document.getElementById('movieOptions');
+        const nextSectionBtn = document.getElementById('nextSectionBtn');
+        const yesBtnRelationship = document.getElementById('yesBtnRelationship');
+        const noBtnRelationship = document.getElementById('noBtnRelationship');
+        const toTermsBtn = document.getElementById('toTermsBtn');
+        const acceptTerms = document.getElementById('acceptTerms');
+        const toFinal = document.getElementById('toFinal');
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const finalButtons = document.getElementById('finalButtons');
+        const termsButtons = document.getElementById('termsButtons');
+        const gameMessage = document.getElementById('gameMessage');
+        const movieMessage = document.getElementById('movieMessage');
+        const relationshipMessage = document.getElementById('relationshipMessage');
+        const finalMessageGame = document.getElementById('finalMessageGame');
+        const finalMessage = document.getElementById('finalMessage');
+
+        const questions = document.querySelectorAll('#questions > div');
+        let currentQuestion = 0;
+
+        const button = document.getElementById('change-bg-btn');
+
+
+    yesBtn.addEventListener('click', () => {
+      // Agregar animación
+      body.classList.add('extravagant-animation');
+      
+      // Detener la animación después de 6 segundos y fijar el fondo en morado
+      setTimeout(() => {
+        body.classList.remove('extravagant-animation');
+        body.style.background = "radial-gradient(circle, #6b21a8, #4c1d95)"; // Fondo fijo (morado final)
+        body.style.transform = "rotate(0deg) scale(1)"; // Resetear transformaciones
+
+      }, 6000);
+
+      setTimeout(() => {
+        window.location.href = 'myheart.html';
+      }, 10000);
+
+
+    });
+        // Función para mostrar una sección con animación
+        function showSection(fromSection, toSection) {
+            gsap.to(fromSection, {
+                opacity: 0,
+                y: -50,
+                duration: 0.5,
+                onComplete: () => {
+                    fromSection.classList.add('hidden');
+                    toSection.classList.remove('hidden');
+                    gsap.fromTo(toSection, { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.5 });
+                }
+            });
+        }
+
+        // Mostrar mensaje de error cuando no es el nombre esperado
+        function showErrorMessage() {
+            const errorMessage = document.getElementById('errorMessage');
+            errorMessage.textContent = `😢 Lo siento, pero no puedes obtener la llave del corazón de Yeferson.`;
+            errorMessage.classList.remove('hidden');
+            gsap.fromTo(errorMessage, { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.5 });
+            yesVerifyBtn.classList.add('hidden');
+            noVerifyBtn.classList.add('hidden');
+        }
+
+        // Mostrar siguiente pregunta con animación
+        function showNextQuestion() {
+            gsap.to(questions[currentQuestion], {
+                opacity: 0,
+                y: -30,
+                duration: 0.5,
+                onComplete: () => {
+                    questions[currentQuestion].classList.add('hidden');
+                    currentQuestion++;
+                    if (currentQuestion < questions.length) {
+                        questions[currentQuestion].classList.remove('hidden');
+                        gsap.fromTo(questions[currentQuestion], { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.5 });
+                        gameMessage.classList.add('hidden');
+                    } else {
+                        showSection(gameSection, relationshipQuestionSection);
+                        body.classList.remove("bg-red-600");
+                        body.classList.remove("text-white");
+                        body.classList.add("text-black")
+                        body.classList.add("bg-withe-600");
+
+                    }
+                }
+            });
+        }
+
+        // Mostrar mensaje final con animación
+        function showFinalMessage(accepted) {
+            finalMessage.textContent = accepted
+                ? '🎉 ¡Me hacabas de hacer la persona mas feliz del mundo! 🎉'
+                : '😢 No te preocupes, aún te quiero.';
+            gsap.to([yesBtn, noBtn], {
+                opacity: 0,
+                y: -20,
+                duration: 0.5,
+                onComplete: () => {
+                    yesBtn.classList.add('hidden');
+                    noBtn.classList.add('hidden');
+                    finalMessage.classList.remove('hidden');
+                    gsap.fromTo(finalMessage, { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.5 });
+                }
+            });
+        }
+
+        // Eventos
+        startBtn.addEventListener('click', () => {
+            showSection(welcomeSection, verifySection);
+        });
+
+        yesVerifyBtn.addEventListener('click', () => {
+            showSection(verifySection, movieQuestionSection);
+        });
+
+        noVerifyBtn.addEventListener('click', showErrorMessage);
+
+        document.querySelectorAll('.option').forEach(option => {
+            option.addEventListener('click', () => {
+                if (option.dataset.correct === 'true') {
+                    gameMessage.textContent = '¡Correcto! 🎉';
+                    setTimeout(() => {
+                        showNextQuestion();
+                    }, 1000)
+                } else {
+                    gameMessage.textContent = '¡Incorrecto! 😅';
+                }
+                gameMessage.classList.remove('hidden');
+                gsap.fromTo(gameMessage, { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.5 });
+
+            });
+        });
+
+        document.querySelectorAll('.movieOption').forEach(option => {
+            option.addEventListener('click', () => {
+                if (option.dataset.correct === 'true') {
+                    movieMessage.textContent = '¡Correcto! 🎉';
+                    setTimeout(() => {
+                        showSection(movieQuestionSection, gameSection);
+                        body.classList.remove("bg-blue-500");
+
+
+                        body.classList.add("bg-red-600");
+
+                    }, 1000)
+                } else {
+                    movieMessage.textContent = '¡Incorrecto! 😅 Lo siento, pero tu no puedes obtener el corazón de Yeferson.!';
+                    movieOptions.classList.add('hidden');
+                }
+                movieMessage.classList.remove('hidden');
+                gsap.fromTo(movieMessage, { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.5 });
+            });
+        });
+
+        yesBtnRelationship.addEventListener('click', () => {
+            relationshipMessage.textContent = "Desde que nos conocimos, he disfrutado cada momento juntos. Para mí, todo lo que hemos vivido hasta ahora es especial y quiero seguir compartiendo más momentos contigo. Me siento afortunado de haberte conocido.";
+            showSection(relationshipQuestionSection, relationshipAnswerSection);
+            setTimeout(() => {
+                showSection(relationshipAnswerSection, poemSection);
+            }, 10000)
+        });
+
+        noBtnRelationship.addEventListener('click', () => {
+            finalMessageGame.textContent = "Tienes razón, pero muero de ganas de seguir conociéndote para que pronto pueda preguntártelo.";
+            showSection(relationshipQuestionSection, relationshipAnswerSection);
+        });
+
+
+        toTermsBtn.addEventListener('click', () => {
+            showSection(poemSection, termsSection);
+        });
+
+        acceptTerms.addEventListener('click', () => {
+            showSection(termsSection, finalSection);
+        });
+
+        yesBtn.addEventListener('click', () => {
+            showFinalMessage(true);
+            finalTitle.classList.add('hidden');
+
+        });
+
+        noBtn.addEventListener('click', () => {
+            showFinalMessage(false);
+        });
+
+
+    </script>
+</body>
+
+</html>
